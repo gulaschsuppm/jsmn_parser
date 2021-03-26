@@ -5,4 +5,4 @@ script:
   - cd build
   - cmake ..
   - make
-  - ./test/test_jsmn_parser
+  - ./tests/test_jsmn_parser
