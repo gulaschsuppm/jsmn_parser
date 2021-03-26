@@ -1,0 +1,8 @@
+language: c
+
+script:
+  - mkdir -p build
+  - cd build
+  - cmake ..
+  - make
+  - ./test/test_jsmn_parser
