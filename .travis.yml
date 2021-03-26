@@ -14,4 +14,4 @@ script:
   - make lcov
   
 after_success:
-  - codecov -t 37e1e81f-12be-4e55-add0-dcfccf0edee1 -X lcov
+  - bash <(curl -s https://codecov.io/bash)
