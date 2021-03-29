@@ -238,13 +238,77 @@ void test_index_array_of_objects()
     TEST_ASSERT(obj4 == tokens);
 }
 
+void test_key_objects()
+{
+    const char* json_test_string =
+    "{"
+    "\"Object1\":{\"Key\":0}"
+    "\"Object2\":{\"Key\":1}"
+    "}";
+
+    jsmntok_t* tokens = tokenize(json_test_string, strlen(json_test_string));
+
+    TEST_ASSERT(tokens != NULL);
+
+    // Access the first (0) index
+    const jsmntok_t* obj1 = tok_get_key(tokens, json_test_string, "Object1");
+    TEST_ASSERT(obj1 != tokens);
+    TEST_ASSERT_EQUAL_STRING_LEN("Object1", json_test_string + obj1->start, obj1->end - obj1->start);
+
+    // Try to access key
+    const jsmntok_t* key = tok_get_key(tokens, json_test_string, "Key");
+    // Equal means nothing found
+    TEST_ASSERT(key == tokens);
+
+    // Access first (0) index within dave
+    const jsmntok_t* obj1_key = tok_get_key(obj1, json_test_string, "Key");
+    TEST_ASSERT(obj1_key != obj1);
+    TEST_ASSERT_EQUAL_STRING_LEN("Key", json_test_string + obj1_key->start, obj1_key->end - obj1_key->start);
+
+    // Access the second (1) index
+    const jsmntok_t* obj2 = tok_get_key(tokens, json_test_string, "Object2");
+    TEST_ASSERT(obj2 != tokens);
+    TEST_ASSERT_EQUAL_STRING_LEN("Object2", json_test_string + obj2->start, obj2->end - obj2->start);
+
+    const jsmntok_t* obj3 = tok_get_key(tokens, json_test_string, "Object3");
+    // Equal means nothing found
+    TEST_ASSERT(obj3 == tokens);
+}
+
+void test_key_string_in_array()
+{
+    const char* json_test_string =
+    "{"
+    "\"Array\":[\"FakeKey1\",\"FakeKey2\"]"
+    "}";
+
+    jsmntok_t* tokens = tokenize(json_test_string, strlen(json_test_string));
+
+    TEST_ASSERT(tokens != NULL);
+
+    // Access the key "Array"
+    const jsmntok_t* arr = tok_get_key(tokens, json_test_string, "Array");
+    TEST_ASSERT(arr != tokens);
+    TEST_ASSERT_EQUAL_STRING_LEN("Array", json_test_string + arr->start, arr->end - arr->start);
+
+    // Try to access a string in an array
+    const jsmntok_t* fake_key = tok_get_key(arr, json_test_string, "FakeKey1");
+    // Equal means nothing found
+    TEST_ASSERT(fake_key == arr);
+}
+
 int main()
 {
     UNITY_BEGIN();
+
     RUN_TEST(test_index_objects);
     RUN_TEST(test_index_objects_with_key);
     RUN_TEST(test_index_array);
     RUN_TEST(test_index_array_with_key);
     RUN_TEST(test_index_array_of_objects);
+
+    RUN_TEST(test_key_objects);
+    RUN_TEST(test_key_string_in_array);
+    
     return UNITY_END();
 }
