@@ -297,6 +297,38 @@ void test_name_string_in_array()
     TEST_ASSERT(fake_key == arr);
 }
 
+void test_example_in_readme()
+{
+    const char* json_test_string =
+    "{"
+    "\"Paul\":"
+    "   {"
+    "       \"Age\": 30,"
+    "       \"Children\":"
+    "       ["
+    "           \"Barbara\","
+    "           \"Peter\""
+    "       ]"
+    "   },"
+    "\"Anna\":"
+    "   {"
+    "       \"Age\":41,"
+    "       \"Children\":"
+    "       []"
+    "   }"
+    "}";
+
+    jsmntok_t* tokens = tokenize(json_test_string, strlen(json_test_string));
+
+    const jsmntok_t* pauls_second_child = tok_get_index(tok_get_name(tok_get_name(tokens, json_test_string, "Paul"), json_test_string, "Children"), 1);
+    TEST_ASSERT(pauls_second_child != tokens);
+    TEST_ASSERT_EQUAL_STRING_LEN("Peter", json_test_string + pauls_second_child->start, pauls_second_child->end - pauls_second_child->start);
+
+    const jsmntok_t* annas_age = tok_get_leaf(tok_get_index(tokens, 1), json_test_string, "Age");
+    TEST_ASSERT(annas_age != tokens);
+    TEST_ASSERT_EQUAL_STRING_LEN("41", json_test_string + annas_age->start, annas_age->end - annas_age->start);
+}
+
 int main()
 {
     UNITY_BEGIN();
@@ -309,6 +341,8 @@ int main()
 
     RUN_TEST(test_name_objects);
     RUN_TEST(test_name_string_in_array);
+
+    RUN_TEST(test_example_in_readme);
     
     return UNITY_END();
 }
