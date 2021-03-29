@@ -238,7 +238,7 @@ void test_index_array_of_objects()
     TEST_ASSERT(obj4 == tokens);
 }
 
-void test_key_objects()
+void test_name_objects()
 {
     const char* json_test_string =
     "{"
@@ -251,31 +251,31 @@ void test_key_objects()
     TEST_ASSERT(tokens != NULL);
 
     // Access the first (0) index
-    const jsmntok_t* obj1 = tok_get_key(tokens, json_test_string, "Object1");
+    const jsmntok_t* obj1 = tok_get_name(tokens, json_test_string, "Object1");
     TEST_ASSERT(obj1 != tokens);
     TEST_ASSERT_EQUAL_STRING_LEN("Object1", json_test_string + obj1->start, obj1->end - obj1->start);
 
     // Try to access key
-    const jsmntok_t* key = tok_get_key(tokens, json_test_string, "Key");
+    const jsmntok_t* key = tok_get_name(tokens, json_test_string, "Key");
     // Equal means nothing found
     TEST_ASSERT(key == tokens);
 
     // Access first (0) index within dave
-    const jsmntok_t* obj1_key = tok_get_key(obj1, json_test_string, "Key");
+    const jsmntok_t* obj1_key = tok_get_name(obj1, json_test_string, "Key");
     TEST_ASSERT(obj1_key != obj1);
     TEST_ASSERT_EQUAL_STRING_LEN("Key", json_test_string + obj1_key->start, obj1_key->end - obj1_key->start);
 
     // Access the second (1) index
-    const jsmntok_t* obj2 = tok_get_key(tokens, json_test_string, "Object2");
+    const jsmntok_t* obj2 = tok_get_name(tokens, json_test_string, "Object2");
     TEST_ASSERT(obj2 != tokens);
     TEST_ASSERT_EQUAL_STRING_LEN("Object2", json_test_string + obj2->start, obj2->end - obj2->start);
 
-    const jsmntok_t* obj3 = tok_get_key(tokens, json_test_string, "Object3");
+    const jsmntok_t* obj3 = tok_get_name(tokens, json_test_string, "Object3");
     // Equal means nothing found
     TEST_ASSERT(obj3 == tokens);
 }
 
-void test_key_string_in_array()
+void test_name_string_in_array()
 {
     const char* json_test_string =
     "{"
@@ -287,12 +287,12 @@ void test_key_string_in_array()
     TEST_ASSERT(tokens != NULL);
 
     // Access the key "Array"
-    const jsmntok_t* arr = tok_get_key(tokens, json_test_string, "Array");
+    const jsmntok_t* arr = tok_get_name(tokens, json_test_string, "Array");
     TEST_ASSERT(arr != tokens);
     TEST_ASSERT_EQUAL_STRING_LEN("Array", json_test_string + arr->start, arr->end - arr->start);
 
     // Try to access a string in an array
-    const jsmntok_t* fake_key = tok_get_key(arr, json_test_string, "FakeKey1");
+    const jsmntok_t* fake_key = tok_get_name(arr, json_test_string, "FakeKey1");
     // Equal means nothing found
     TEST_ASSERT(fake_key == arr);
 }
@@ -307,8 +307,8 @@ int main()
     RUN_TEST(test_index_array_with_key);
     RUN_TEST(test_index_array_of_objects);
 
-    RUN_TEST(test_key_objects);
-    RUN_TEST(test_key_string_in_array);
+    RUN_TEST(test_name_objects);
+    RUN_TEST(test_name_string_in_array);
     
     return UNITY_END();
 }
