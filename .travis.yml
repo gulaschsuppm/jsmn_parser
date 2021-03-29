@@ -1,0 +1,17 @@
+language: c
+
+addons:
+  apt:
+    packages:
+      - lcov
+
+script:
+  - mkdir -p build
+  - cd build
+  - cmake ..
+  - make
+  - ./tests/test_jsmn_parser
+  - make lcov
+  
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
