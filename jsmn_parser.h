@@ -49,7 +49,7 @@ extern "C" {
  *										element. If no next element is found
  *										the given token is returned.
  */
-const jsmntok_t* tok_next_elem(const jsmntok_t* tok);
+static const jsmntok_t* tok_next_elem(const jsmntok_t* tok);
 
 /**
  * @brief Check if the given token is a name.
@@ -61,7 +61,7 @@ const jsmntok_t* tok_next_elem(const jsmntok_t* tok);
  * @return true 						if token points to a name.
  * @return false 						if token points to something else.
  */
-bool tok_is_name(const jsmntok_t* tok);
+static bool tok_is_name(const jsmntok_t* tok);
 
 /**
  * @brief Check if the given token is a leaf.
@@ -72,7 +72,7 @@ bool tok_is_name(const jsmntok_t* tok);
  * @return true 						if oken points to a leaf.
  * @return false 						if oken points to something else.
  */
-bool tok_is_leaf(const jsmntok_t* tok);
+static bool tok_is_leaf(const jsmntok_t* tok);
 
 /**
  * @brief Compare the value pointed to by the token with another string.
@@ -86,7 +86,7 @@ bool tok_is_leaf(const jsmntok_t* tok);
  * @return true 						if strings are identical. 
  * @return false 						if strings mismatch.
  */
-bool tok_string_compare(const jsmntok_t* tok, const char* js, const char* value);
+static bool tok_string_compare(const jsmntok_t* tok, const char* js, const char* value);
 
 /**
  * @brief Get the value of a name/value pair.
@@ -96,7 +96,7 @@ bool tok_string_compare(const jsmntok_t* tok, const char* js, const char* value)
  * @return const jsmntok_t* 			Pointer to the value, returns the given
  *										token if it is a value.
  */
-const jsmntok_t* tok_get_value(const jsmntok_t* tok);
+static const jsmntok_t* tok_get_value(const jsmntok_t* tok);
 
 /**
  * @brief Get the token at the given index.
@@ -110,7 +110,7 @@ const jsmntok_t* tok_get_value(const jsmntok_t* tok);
  *										index. If index is out of range, the
  *										given token is returned.
  */
-const jsmntok_t* tok_get_index(const jsmntok_t* tok, int index);
+static const jsmntok_t* tok_get_index(const jsmntok_t* tok, int index);
 
 /**
  * @brief Get the token with the given name.
@@ -125,7 +125,7 @@ const jsmntok_t* tok_get_index(const jsmntok_t* tok, int index);
  *										name, returns the given token if the
  *										name could not be found.
  */
-const jsmntok_t* tok_get_name(const jsmntok_t* tok, const char* js, const char* name);
+static const jsmntok_t* tok_get_name(const jsmntok_t* tok, const char* js, const char* name);
 
 /**
  * @brief Get the token with the value for the given name, if it is a leaf.
@@ -141,12 +141,12 @@ const jsmntok_t* tok_get_name(const jsmntok_t* tok, const char* js, const char* 
  *										if the name could not be found or the
  *										value is not a leaf.
  */
-const jsmntok_t* tok_get_leaf(const jsmntok_t* tok, const char* js, const char* name);
+static const jsmntok_t* tok_get_leaf(const jsmntok_t* tok, const char* js, const char* name);
 
 /*****************************************************************************/
 /* Functions                                                                 */
 /*****************************************************************************/
-const jsmntok_t* tok_next_elem(const jsmntok_t* tok)
+static const jsmntok_t* tok_next_elem(const jsmntok_t* tok)
 {
 	const jsmntok_t* start_tok = tok;
 	// Add ourselves
@@ -163,17 +163,17 @@ const jsmntok_t* tok_next_elem(const jsmntok_t* tok)
 	return end_tok;
 }
 
-bool tok_is_name(const jsmntok_t* tok)
+static bool tok_is_name(const jsmntok_t* tok)
 {
 	return (tok->type == JSMN_STRING && tok->size == 1);
 }
 
-bool tok_is_value(const jsmntok_t* tok)
+static bool tok_is_leaf(const jsmntok_t* tok)
 {
 	return (tok->size == 0);
 }
 
-bool tok_string_compare(const jsmntok_t* tok, const char* js, const char* value)
+static bool tok_string_compare(const jsmntok_t* tok, const char* js, const char* value)
 {
 	bool same = false;
 	const char* start = js + tok->start;
@@ -194,7 +194,7 @@ bool tok_string_compare(const jsmntok_t* tok, const char* js, const char* value)
 	return same;
 }
 
-const jsmntok_t* tok_get_value(const jsmntok_t* tok)
+static const jsmntok_t* tok_get_value(const jsmntok_t* tok)
 {
 	const jsmntok_t* value = tok;
 	
@@ -206,7 +206,7 @@ const jsmntok_t* tok_get_value(const jsmntok_t* tok)
 	return value;
 }
 
-const jsmntok_t* tok_get_index(const jsmntok_t* tok, int index)
+static const jsmntok_t* tok_get_index(const jsmntok_t* tok, int index)
 {
 	const jsmntok_t* tok_at_index = tok;
 	
@@ -232,7 +232,7 @@ const jsmntok_t* tok_get_index(const jsmntok_t* tok, int index)
 	return tok_at_index;
 }
 
-const jsmntok_t* tok_get_name(const jsmntok_t* tok, const char* js, const char* name)
+static const jsmntok_t* tok_get_name(const jsmntok_t* tok, const char* js, const char* name)
 {
 	const jsmntok_t* tok_with_name = tok;
 
@@ -264,7 +264,7 @@ const jsmntok_t* tok_get_name(const jsmntok_t* tok, const char* js, const char* 
 	return tok;
 }
 
-const jsmntok_t* tok_get_leaf(const jsmntok_t* tok, const char* js, const char* name)
+static const jsmntok_t* tok_get_leaf(const jsmntok_t* tok, const char* js, const char* name)
 {
 	const jsmntok_t* tok_with_name = tok_get_name(tok, js, name);
 
@@ -272,7 +272,7 @@ const jsmntok_t* tok_get_leaf(const jsmntok_t* tok, const char* js, const char* 
 	if (tok_with_name != tok)
 	{
 		const jsmntok_t* tok_with_value = tok_get_value(tok_with_name);
-		if (tok_is_value(tok_with_value))
+		if (tok_is_leaf(tok_with_value))
 		{
 			return tok_with_value;
 		}
